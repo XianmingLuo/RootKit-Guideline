@@ -1,5 +1,5 @@
 # ECE650 Assignment5 RootKit
-## Hijacking openat()
+## Checkpoint1: Hijacking openat()
 ### First Step: Substitute function pointer of the original openat() to the function pointer of your malicious openat(), but simply invoke the original openat()
 ### Second Step: Print out the pathname that is passed to openat()
 Check the manual to see the function signature of openat()
@@ -48,7 +48,7 @@ When you finish this step, you should be able to see "/etc/passwd" in /var/log/s
 ```
 cat /etc/passwd
 ```
-### Third Step: Pass the substituted pathname to the original openat()
+### Third Step: Substitute pathname and pass it to the original openat()
 One thing to pay attention, the substituted pathname pointer should also be a user-space pointer. Therefore, we need to copy the substituted pathname to the user-space before passing it to the original openat().
 
 How to copy memory from kernel-space to user-space?
@@ -56,3 +56,5 @@ How to copy memory from kernel-space to user-space?
 __copy_to_user(<a user-space pointer>, <a kernel-space pointer>, <number of bytes to copy>)
 
 ```
+
+When you finish the above steps, you should not be able to see the modication to "/etc/passwd", because the parameter pathname of openat() is secretly replaced to "/tmp/passwd"!
